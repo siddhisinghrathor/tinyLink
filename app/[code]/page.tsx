@@ -6,14 +6,20 @@ export default async function RedirectPage({
 }: {
   params: { code: string };
 }) {
-  const link = await prisma.link.findUnique({ where: { code: params.code } });
+  const { code } = params;
 
-  if (!link)
-    return <h1 className="text-center text-3xl mt-20">404 - Link Not Found</h1>;
+  const link = await prisma.link.findUnique({
+    where: { code },
+  });
+
+  if (!link) return <h1>404 Not Found</h1>;
 
   await prisma.link.update({
-    where: { code: params.code },
-    data: { clicks: link.clicks + 1, lastClicked: new Date() },
+    where: { code },
+    data: {
+      clicks: link.clicks + 1,
+      lastClicked: new Date(),
+    },
   });
 
   redirect(link.url);
