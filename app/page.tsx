@@ -44,59 +44,103 @@ export default function Home() {
   };
 
   return (
-    <div className="p-10 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">TinyLink Dashboard</h1>
+    <div className="min-h-screen bg-gray-50 p-10">
+      <div className="max-w-3xl mx-auto">
+        {/* HEADER */}
+        <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
+          TinyLink Dashboard
+        </h1>
 
-      {/* Add Form */}
-      <form onSubmit={create} className="space-y-3 mb-10">
-        <input
-          className="border p-2 w-full"
-          placeholder="Enter long URL"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          required
-        />
-        <input
-          className="border p-2 w-full"
-          placeholder="Custom code (a-zA-Z0-9)"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          required
-        />
+        {/* CARD */}
+        <div className="bg-white shadow-md rounded-xl p-6 mb-10">
+          <h2 className="text-xl font-bold text-gray-700 mb-4">
+            Create Short Link
+          </h2>
 
-        <button
-          disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          {loading ? "Creating..." : "Create Short Link"}
-        </button>
-      </form>
+          <form onSubmit={create} className="space-y-4">
+            <input
+              className="border p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+              placeholder="Enter long URL"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              required
+            />
 
-      {/* Table */}
-      <table className="w-full border">
-        <thead>
-          <tr className="border">
-            <th className="p-2 border">Code</th>
-            <th className="p-2 border">URL</th>
-            <th className="p-2 border">Clicks</th>
-            <th className="p-2 border">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {links.map((l: any) => (
-            <tr key={l.code} className="border">
-              <td className="p-2 border">{l.code}</td>
-              <td className="p-2 border max-w-xs truncate">{l.url}</td>
-              <td className="p-2 border">{l.clicks}</td>
-              <td className="p-2 border">
-                <button className="text-red-600" onClick={() => del(l.code)}>
-                  delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            <input
+              className="border p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+              placeholder="Custom code (a-zA-Z0-9)"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              required
+            />
+
+            <button
+              disabled={loading}
+              className={`w-full py-3 rounded-lg text-white font-semibold
+                ${loading ? "bg-blue-300" : "bg-blue-600 hover:bg-blue-700"}
+              `}
+            >
+              {loading ? "Creating..." : "Create Short Link"}
+            </button>
+          </form>
+        </div>
+
+        {/* TABLE */}
+        <div className="bg-white shadow-md rounded-xl p-6">
+          <h2 className="text-xl font-bold text-gray-700 mb-4">All Links</h2>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-gray-100 text-gray-600 uppercase text-sm">
+                  <th className="p-3 border">Code</th>
+                  <th className="p-3 border">URL</th>
+                  <th className="p-3 border">Clicks</th>
+                  <th className="p-3 border">Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {links.map((l: any) => (
+                  <tr
+                    key={l.code}
+                    className="border-b hover:bg-gray-50 transition"
+                  >
+                    <td className="p-3 font-semibold text-blue-600">
+                      <a href={`/${l.code}`} target="_blank">
+                        {l.code}
+                      </a>
+                    </td>
+
+                    <td className="p-3 max-w-xs truncate text-gray-700">
+                      {l.url}
+                    </td>
+
+                    <td className="p-3">{l.clicks}</td>
+
+                    <td className="p-3">
+                      <button
+                        className="text-red-600 hover:underline"
+                        onClick={() => del(l.code)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+
+                {links.length === 0 && (
+                  <tr>
+                    <td colSpan={4} className="text-center text-gray-500 p-6">
+                      No links created yet.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
