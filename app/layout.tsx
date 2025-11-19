@@ -2,7 +2,6 @@ export const metadata = {
   title: "TinyLink",
   description: "URL shortener",
 };
-
 export default function RootLayout({
   children,
 }: {

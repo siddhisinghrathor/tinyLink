@@ -1,11 +1,11 @@
 import { NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export async function GET(
   req: NextRequest,
   context: { params: { code: string } }
 ) {
-  const { code } = await context.params;
+  const { code } = context.params;  // FIXED
 
   const link = await prisma.link.findUnique({
     where: { code },
@@ -20,7 +20,7 @@ export async function DELETE(
   req: NextRequest,
   context: { params: { code: string } }
 ) {
-  const { code } = await context.params;
+  const { code } = context.params; // FIXED
 
   await prisma.link.delete({
     where: { code },
